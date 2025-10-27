@@ -78,10 +78,26 @@ graph TD
 1. From the Hamburger menu in the top left, go to `Query workspace` where you will be executing SQL queries.
    ![alt text](./attachments/image-5.png)
 
-2. Create schema for Netezza offload and tables in watsonx.data iceberg catalog where you will offload data on transactions from Netezza `EQUITY_TRANSACTIONS`.
+2. Create Schema and Tables for Netezza Offload - This is the heading of the section.
+In this step, you'll create a schema in the Watsonx.data Iceberg catalog to offload transaction data from the Netezza's EQUITY_TRANSACTIONS table.
 
-   - Modify the SQL command below with your `<SCHEMA_DWH_OFFLOAD>` and `WXD_BUCKET` values in your environment file and paste into the `Query Workspace` (values should be unique accross Cloud Account so you will have a different one).
-   - For the bootcamp, the convention for <SCHEMA*DWH_OFFLOAD> is `netezza_offload*<YourName_First3LettersOfSurname>`
+Open your env.txt file and locate the following environment variables:
+
+SCHEMA_DWH_OFFLOAD
+WXD_BUCKET
+
+
+
+Modify the SQL command below by replacing the placeholders <SCHEMA_DWH_OFFLOAD> and <WXD_BUCKET> with the actual values from your environment file.
+
+⚠️ These values are unique across IBM Cloud accounts, so your values will differ from others.
+
+
+
+Paste the updated SQL command into the Query Workspace and execute it.
+
+For consistency during the lab, use the following format for your schema name:
+netezza_offload_<YourName_First3LettersOfSurname>
 
 ```sql
 CREATE SCHEMA IF NOT EXISTS iceberg_catalog.<SCHEMA_DWH_OFFLOAD> WITH (location = 's3a://<WXD_BUCKET>/<SCHEMA_DWH_OFFLOAD>');
@@ -249,11 +265,13 @@ FROM "iceberg_catalog"."<SCHEMA_DWH_OFFLOAD>"."dim_account" as da;
 Expected output:
 ![count-rows-nz](attachments/2025-06-27-12-36-39-pasted-vscode.png)
 
-Due to the lab limitations (we have only one Netezza instance for all participants) => we will use `equity_transactions_ly` where only current year (2025) data exists. The same schema and table definitions are identical to `equity_transactions` schema that we've offloaded in previous steps 4.3.
+Due to lab limitations—specifically, the use of a shared Netezza instance for all participants, we will be working with the equity_transactions_ly table, which contains data only for the current year (2025).
+This table resides in the same schema and follows the same structure and definitions as the equity_transactions table used in Step 4.3 for data offloading. You can proceed with your queries and operations as if working with the original table.
 
 ### 4.5 - Run Analytical Queries using the Presto engine
 
-Now the data has be prepared and ready to be consumed by the business users and data scientists for analytical and AI purpose. Let's develop some queries that will answer business questions listed below.
+The data is now prepared and ready to be consumed by business users and data scientists for analytical and AI-driven use cases.
+In the next section, we'll develop a set of queries designed to answer key business questions based on the offloaded data.
 
 **Tip :**
 
