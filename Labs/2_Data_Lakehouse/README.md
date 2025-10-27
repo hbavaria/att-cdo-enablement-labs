@@ -181,8 +181,8 @@ At the end of the lab you should have 2 tables in watsonx.data `clients_schema_<
 
 4. Run all cells consequitively starting from packages installations in the first cell and check outputs
 
-- :warning: The notebook will prompt for a Cloud API Key. When prompted, please paste the `watsonx.data back-end Cloud API key` that was provided by the instructor and press `Enter`. Do not use your client CLOUD_API_KEY here.
-- :warning: The `spark.hadoop.fs.s3a.secret.key`and `spark.hadoop.fs.s3a.access.key` will be provided.
+- ⚠️ warning: The notebook will prompt for a Cloud API Key. When prompted, please paste the `watsonx.data back-end Cloud API key` that was provided by the instructor and press `Enter`. Do not use your client CLOUD_API_KEY here.
+- ⚠️ warning: The `spark.hadoop.fs.s3a.secret.key`and `spark.hadoop.fs.s3a.access.key` will be provided during the lab session.
 - A successful run will include the payload to your spark app submission in the last cell in json format.
 - Copy the `payload` to your reference note, you will use it for your spark app submission.
 
@@ -200,7 +200,7 @@ At the end of the lab you should have 2 tables in watsonx.data `clients_schema_<
    ![import-from-payload](./attachments/2025-06-16-00-26-20-pasted-vscode.png)
 8. Fill in the remaining parameters:
    - Application type - Python
-   - Application name - `spark-processing`
+   - Application name - `spark-processing-<yourName>`
    - Spark version - 3.4
      ![spark-app-params](./attachments/spark-version.png)
 9. Click `Submit application`
@@ -222,5 +222,5 @@ At the end of the lab you should have 2 tables in watsonx.data `clients_schema_<
 
 1. From the Hamburger menu on the top left go to `Data manager`
 
-2. Verify `holdings_table` is available in `iceberg_data."clients_schema_YourName_First3LettersOfSurname"`
+2. Verify `holdings_table` is available in `iceberg_catalog."clients_schema_YourName_First3LettersOfSurname"`
    ![alt text](./attachments/image-28.png)

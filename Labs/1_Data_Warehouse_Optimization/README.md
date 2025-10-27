@@ -73,35 +73,35 @@ graph TD
 
 ![](./attachments/Pasted%20image%2020250409145504.png)
 
-### 4.2 - Create New schema and tables in watsonx.data
+### 4.2 - Create Schema and Tables for Netezza Offload
 
 1. From the Hamburger menu in the top left, go to `Query workspace` where you will be executing SQL queries.
    ![alt text](./attachments/image-5.png)
 
-2. Create Schema and Tables for Netezza Offload - This is the heading of the section.
-In this step, you'll create a schema in the Watsonx.data Iceberg catalog to offload transaction data from the Netezza's EQUITY_TRANSACTIONS table.
+2. In this step, you'll create a schema in the Watsonx.data Iceberg catalog to offload transaction data from the Netezza's EQUITY_TRANSACTIONS table.
 
-Open your env.txt file and locate the following environment variables:
+    Open your env.txt file and locate the following environment variables:
 
-SCHEMA_DWH_OFFLOAD
-WXD_BUCKET
+    <strong>SCHEMA_DWH_OFFLOAD</strong>
 
-
-
-Modify the SQL command below by replacing the placeholders <SCHEMA_DWH_OFFLOAD> and <WXD_BUCKET> with the actual values from your environment file.
-
-⚠️ These values are unique across IBM Cloud accounts, so your values will differ from others.
+    <strong>WXD_BUCKET</strong>
 
 
 
-Paste the updated SQL command into the Query Workspace and execute it.
+    Modify the SQL command below by replacing the placeholders <SCHEMA_DWH_OFFLOAD> and <WXD_BUCKET> with the actual values from your environment file.
 
-For consistency during the lab, use the following format for your schema name:
-netezza_offload_<YourName_First3LettersOfSurname>
+    ⚠️ These values are unique across IBM Cloud accounts, so your values will differ from others.
 
-```sql
-CREATE SCHEMA IF NOT EXISTS iceberg_catalog.<SCHEMA_DWH_OFFLOAD> WITH (location = 's3a://<WXD_BUCKET>/<SCHEMA_DWH_OFFLOAD>');
-```
+
+
+    Paste the updated SQL command into the Query Workspace and execute it.
+
+    For consistency during the lab, use the following format for your schema name:
+    netezza_offload_<YourName_First3LettersOfSurname>
+
+    ```sql
+    CREATE SCHEMA IF NOT EXISTS iceberg_catalog.<SCHEMA_DWH_OFFLOAD> WITH (location = 's3a://<WXD_BUCKET>/<SCHEMA_DWH_OFFLOAD>');
+    ```
 
 3. Check that query execution was successful:
    ![successful-query](attachments/2025-06-27-12-21-19-pasted-vscode.png)
@@ -265,8 +265,8 @@ FROM "iceberg_catalog"."<SCHEMA_DWH_OFFLOAD>"."dim_account" as da;
 Expected output:
 ![count-rows-nz](attachments/2025-06-27-12-36-39-pasted-vscode.png)
 
-Due to lab limitations—specifically, the use of a shared Netezza instance for all participants, we will be working with the equity_transactions_ly table, which contains data only for the current year (2025).
-This table resides in the same schema and follows the same structure and definitions as the equity_transactions table used in Step 4.3 for data offloading. You can proceed with your queries and operations as if working with the original table.
+Due to lab limitations—specifically, the use of a shared Netezza instance for all participants, we will be working with the `equity_transactions_ly` table, which contains data only for the current year (2025).
+This table resides in the same schema and follows the same structure and definitions as the `equity_transactions` table used in Step 4.3 for data offloading. You can proceed with your queries and operations as if working with the original table.
 
 ### 4.5 - Run Analytical Queries using the Presto engine
 
