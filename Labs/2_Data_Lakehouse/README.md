@@ -33,9 +33,11 @@ The :dart: **purpose** of this Lab is to demonstrate:
 
 In `Presto data insertion` you will first :memo: register data located in hive bucket to hive catalog as external tables, then :inbox_tray: ingest some of the data into iceberg catalog (accounts table) associated with the presto engine.
 
-#### Spark
+#### Spark Pre-processing for Holdings Table
 
-In the Spark steps `Spark pre-processing` you will prepare holdings table :clipboard: for 2024 and particular stocks based on tables offloaded in the previous lab from Netezza. Then holdings for 2024 will be combined with holdings up to 2023 containing pre-defined set of stocks to get total `holdings_table` that will later be used along with `accounts_table` in Agentic Flow. Postgres `bankdemo.customers_table` is federated to watsonx.data `postgres_catalog` as part of the pre-requisites and does not require any additional changes and will be used AS IS in Agentic Flow.
+In this step, you'll use Spark to prepare the `holdings_table` for the year **2024**, focusing on specific stocks based on the tables offloaded from Netezza in the previous lab.
+Once the 2024 holdings are prepared, they will be **combined with holdings data up to 2023**, which includes a predefined set of stocks. This merged dataset will form the complete `holdings_table`, which will be used in subsequent analysis steps alongside the `accounts_table`.
+Additionally, the `bankdemo.customers_table` from the Postgres database has been **federated to the `watsonx.data` Postgres catalog as part of the lab prerequisites. No further changes are required, and it will be used as-is in the upcoming steps.
 
 ## 2. Prerequisites
 
@@ -49,12 +51,12 @@ In the Spark steps `Spark pre-processing` you will prepare holdings table :clipb
 **:card_file_box: Sources of data**
 
 - files in COS hive bucket
-  - Go to your COS instance https://cloud.ibm.com/objectstorage/instances -> select bucket that starts with `hive` like `hive-1753085729998611476` -> search for `input_data_hive` directory, there you should find folders/files that were pre-uploaded for you by instructor, if not raise concerns:
+  - Go to your COS instance https://cloud.ibm.com/objectstorage/instances -> select bucket of name `hive-catelog-enablement-bucket` -> search for `input_data_hive` directory, there you should find folders/files that were pre-uploaded for you by instructor, if not raise concerns:
     - `accounts_ht` contains the list of account ids and customer ids from the internal system dump;
     - `holdings_ht`contains information on accounts and their stock holdings (unique by account_id and asset_ticker) for the previous period up to 2023, where `asset_ticker` is stock symbol, `holding_amt` is the total amount of a particular stock and `tax_liability` is the remaining tax liability still owed;
     - `tax_liability_ht` contains country specific tax rate;
 - watsonx.data schema
-  - `iceberg_data.<SCHEMA_DWH_OFFLOAD>` contains data offloaded from Netezza;
+  - `iceberg_catalog.<SCHEMA_DWH_OFFLOAD>` contains data offloaded from Netezza;
   - `postgres_catalog.bankdemo.customers_table` is a federated postgres table that contains customer data.
 
 ## 4. Expected outcome
@@ -73,7 +75,7 @@ At the end of the lab you should have 2 tables in watsonx.data `clients_schema_<
 2. Check that you can see env.txt file in the list of all assets on `Assets` tab
    ![view-env.txt](./attachments/2025-06-15-12-39-24-pasted-vscode.png)
 3. Check that Connections are available, we will be using them in the lab
-   ![](./attachments/2025-06-16-16-07-01-pasted-vscode.png)
+   ![](./attachments/2-connections.png)
 
 ### 5.2 Import Jupyter Notebook with the script from local folder
 
@@ -87,7 +89,7 @@ At the end of the lab you should have 2 tables in watsonx.data `clients_schema_<
    ![browse-jn](./attachments/2025-06-11-13-50-39-pasted-vscode.png)
 
 4. Select `Data_Lakehouse/wx-data/1_presto_wxai.ipynb`
-   ![select-jn](./attachments/2025-06-11-17-05-31-pasted-vscode.png)
+   ![select-jn](./attachments/import-notebook.png)
 
 5. Append name with your initials: `-name-first3lettersSurname` and click `Create`
    ![add-jn](./attachments/2025-06-11-17-07-04-pasted-vscode.png)
@@ -180,6 +182,7 @@ At the end of the lab you should have 2 tables in watsonx.data `clients_schema_<
 4. Run all cells consequitively starting from packages installations in the first cell and check outputs
 
 - :warning: The notebook will prompt for a Cloud API Key. When prompted, please paste the `watsonx.data back-end Cloud API key` that was provided by the instructor and press `Enter`. Do not use your client CLOUD_API_KEY here.
+- :warning: The `spark.hadoop.fs.s3a.secret.key`and `spark.hadoop.fs.s3a.access.key` will be provided.
 - A successful run will include the payload to your spark app submission in the last cell in json format.
 - Copy the `payload` to your reference note, you will use it for your spark app submission.
 
@@ -198,8 +201,8 @@ At the end of the lab you should have 2 tables in watsonx.data `clients_schema_<
 8. Fill in the remaining parameters:
    - Application type - Python
    - Application name - `spark-processing`
-   - Spark version - 3.5
-     ![spark-app-params](./attachments/2025-06-16-00-32-41-pasted-vscode.png)
+   - Spark version - 3.4
+     ![spark-app-params](./attachments/spark-version.png)
 9. Click `Submit application`
 
 ### 6.4 Check Status
@@ -214,19 +217,6 @@ At the end of the lab you should have 2 tables in watsonx.data `clients_schema_<
    ![spark-history](./attachments/2025-06-16-00-36-31-pasted-vscode.png)
    _ Click on the latest app
    _ Explore Jobs, Stages, SQL/DataFrame
-
-3. Optionally review detailed logs in Spark connected COS Bucket.
-
-- Go to `Details` tab and find bucket listed under `Engine home`<br>
-  ![home-bucket](./attachments/2025-07-12_08-09-45.png)
-- Reference env.txt for your actual bucket name, for example: `WXD_BUCKET="wxd2-bucket-gxcrxaku11w09z0"`
-- Open the Cloud Object Storage Service from watsonx.data.
-- Scroll down and open the bucket.
-- In search bar, type `Spark` and switch to folder view.
-  ![home-bucket](./attachments/2025-07-12_08-07-21.png)
-- Browse Spark folder: `spark` -> `spark engine id` -> `logs` -> find by your app id -> spark-driver log -> Download it
-  ![spark-app-id](./attachments/2025-07-12_08-22-27.png)
-  ![spark-logs](./attachments/2025-07-12_08-24-34.png)
 
 ### 6.5 Review data in watsonx.data UI after spark processing
 
