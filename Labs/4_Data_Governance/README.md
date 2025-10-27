@@ -22,11 +22,6 @@
 <summary><h2>1. Introduction</h2></summary>
 
 This lab will take you through the high level steps below to demonstrate how to implement data protection rule enforcement in watsonx.data.
-
-Because we are working in a shared watsonx.data intelligence (wxi) environment, some of the steps were done for you in advance (steps in dark blue).
-
-<img src="./attachments/image1.png" alt="alt text" width="75%">
-
 </details>
 
 <details id="2-prerequisites">
