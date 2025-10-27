@@ -28,11 +28,11 @@ The objective of this lab is to demonstrate how to reduce the operational cost o
 
 ## 2. Solution Approach:
 
-In this lab the historic data will be off loaded from the Netezza Data Warehouse (DW) database, `INVESTMENTS` and schema `equity_transactions` into watsonx.data iceberg_catalog catalog. The historic data is identified based on the transacations that took place prior to 2024. By reducing the volume of data in the Netezza DW the expensive block storage cost is reduced by using the Cloud Object Storage.
+In this lab the historic data will be off loaded from the Netezza Data Warehouse (DW) database, `INVESTMENTS` and schema, `equity_transactions` into watsonx.data's catalog, `iceberg_catalog`. The historic data is identified based on the transacations that took place prior to 2024. By reducing the volume of data in the Netezza DW the expensive block storage cost is reduced by using the Cloud Object Storage.
 
 The current year data is left in the data warehouse to minimize disruption to the existing applications. We will be using the presto query engine to run federated queries that allows aggregating the data that exists in Netezza and watsonx.data.
 
-The whole lab will be executed in **watsonx.data UI** interface in the back-end techzone environment.
+The whole lab will be executed in **watsonx.data UI** interface.
 
 ## 3. Netezza data schema
 
@@ -65,9 +65,7 @@ graph TD
 
 ### 4.1 - Check Netezza data source
 
-- From IBM Cloud `Resource List` <https://cloud.ibm.com/resources>
-- Select the watsonx.data instance (Under Databases) in `wxdata-`
-- Open web console
+- Access the watsonx.data instance at [wx,data](https://us-south.lakehouse.cloud.ibm.com/#/?crn=crn:v1:bluemix:public:lakehouse:us-south:a/467141891b3c40509380080560f61adc:a2f243a9-4f97-4079-b658-8bcc232ef52d::)
 - From the Hamburger menu in the top left, select `Infrastructure Manager` and verify check that Netezza is added as a data source
 - ![alt text](./attachments/verify-netezza.jpg)
 - From the Hamburger menu in the top left, select `Data manager`

@@ -172,7 +172,7 @@ The User API Key is a prerequisite for successful remote deployment and accessin
 1. Copy the template [env.example](../env.example) in the root folder with the name env.txt and open it in any text editor of your choice.
 
     ```
-    cp "./env.example" "./.env.txt"
+    cp "./env.example" "./env.txt"
     ```
 
 1. Update env.txt as follows
@@ -224,5 +224,3 @@ The User API Key is a prerequisite for successful remote deployment and accessin
 ![connections-overview](./attachments/2connectors.png)
 
 **Congratulations!  You are ready for the labs.**
-
-Return back to [Labs/README.md](../Labs/README.md)
