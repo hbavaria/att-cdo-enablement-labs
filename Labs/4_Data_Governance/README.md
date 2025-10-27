@@ -12,11 +12,7 @@
     - [5.2 Enrich Data for Imported Asset](#52-enrich-data-for-imported-asset)
   - [6. Verify Data Quality SLA compliance information](#6-verify-data-quality-sla-compliance-information)
   - [7. Create Data Protection Rule in Cloud Pak for Data](#7-create-data-protection-rule-in-cloud-pak-for-data)
-  - [8. Add Service Integration in watsonx.data to watsonx.data Intelligence](#8-add-service-integration-in-watsonxdata-to-watsonxdata-intelligence)
-  - [9. Add restricted user access to watsonx.data](#9-add-restricted-user-access-to-watsonxdata)
-    - [9.1 Add access to Infrastructure Components](#91-add-access-to-infrastructure-components)
-    - [9.2 Add Policy to iceberg data](#92-add-policy-to-iceberg-data)
-  - [10. Verify Data Protection Rule is being enforced (Demonstration)](#10-verify-data-protection-rule-is-being-enforced-demonstration)
+  - [8. Verify Data Protection Rule is being enforced (Demonstration)](#8-verify-data-protection-rule-is-being-enforced-demonstration)
 
 <details open id="1-introduction">
 <summary><h2>1. Introduction</h2></summary>
@@ -436,81 +432,8 @@ Because we are working in a shared watsonx.data Intelligence environment, this s
 
 </details>
 
-<details id="8-add-service-integration-in-watsonxdata-to-watsonxdata-intelligence">
-<summary><h2>8. Add Service Integration in watsonx.data to watsonx.data Intelligence</h2></summary>
-
-- Go to `watsonx.data` service instance
-- From the Hamburger menu, select `Access Control`
-- Select `Integrations` tab
-
-  <img src="./attachments/integrations.png" alt="alt text" width="75%"><br>
-
-- Click `Integrate service +` button
-- Select `IBM Knowledge Catalog`
-- Under `Storage catalogs`, select all catalogs
-- Add the watsonx.data Intelligence endpoint for your catalog by prepending api to your host:
-  https://api.dataplatform.cloud.ibm.com (for SaaS Dallas)https://api.eu-gb.dataplatform.cloud.ibm.com (for London)
-- Click `Integrate`
-- ❗️Note: The service will not be activated by default.
-- Click 3 dots to the right of the service integration and select `Activate`
-
-  <img src="./attachments/integrate.png" alt="alt text" width="75%"><br>
-
-- Click `Confirm` when prompted
-- The integration will restart the presto engine.
-
-  <img src="./attachments/integratecomplete.png" alt="alt text" width="75%"><br>
-
-</details>
-
-<details open id="9-add-restricted-user-access-to-watsonxdata">
-<summary><h2>9. Add restricted user access to watsonx.data</h2></summary>
-
-Data protection rules are enforced for users who are not administrators of the data resource. For the lab, our business users will belong to the `Data_Scientist` user group.
-
-<h3 id="91-add-access-to-infrastructure-components">9.1 Add access to Infrastructure Components</h3>
-
-- From the Hamburger menu, select `Access control` from `watsonx.data`
-- In `Infrastructure` Tab, Click `Add Access +`
-- Select checkbox next to `Items` to select all and click Next
-
-  <img src="./attachments/image19.png" alt="alt text" width="75%"><br>
-
-- Add data_scientist, click Next
-
-  <img src="./attachments/image20.png" alt="alt text" width="75%"><br>
-
-- Select the drop down and scroll to the right to select the appropriate roles for the restricted user group.
-
-  - Select the `User` role for `Engines`
-  - Select the `Reader` role for `storage`
-  - Select the `User` role for `catalogs` you may have to scroll right to find them all
-
-- Click Save
-
-  <img src="./attachments/assignroles.png" alt="alt text" width="75%"><br>
-
-<h3 id="92-add-policy-to-iceberg-data">9.2 Add Policy to iceberg data</h3>
-
-- Switch to the `Policies` Tab
-
-  <img src="./attachments/image21.png" alt="alt text" width="50%"><br>
-
-- Click `Add Policy +`
-- Name policy `postgres_allow`, and select `Policy status after creation` to `Active`, click Next
-- Under Choose a resource to get started, Select all `postgres_catalog`
-- Under Search tables enable `all` box
-- Click Next
-- Click `Add rule +`
-- Under Details select Allow -> select all actions
-- On the right, under Choose users or groups, click `Add +`
-- Select `Data_Scientist` Group and select Add
-- Click `Add`, `Add`, `Review` and `Create`
-
-</details>
-
-<details id="10-verify-data-protection-rule-is-being-enforced-demonstration">
-<summary><h2>10. Verify Data Protection Rule is being enforced (Demonstration)</h2></summary>
+<details id="8-verify-data-protection-rule-is-being-enforced-demonstration">
+<summary><h2>8. Verify Data Protection Rule is being enforced (Demonstration)</h2></summary>
 
 - To demonstrate the data protection rule is being enforced, we must login to the environment with a user who is not an owner of the data.
 - For the enablement, this is any user who has been added to the Data_Scientist group.
